@@ -56,7 +56,7 @@ const PLAYLISTS_BY_WEATHER = {
 // ----- 3. Route: get Berkeley weather + matching random playlist -----
 app.get('/api/weather-playlist', async (req, res) => {
   try {
-    const city = 'Berkeley';
+    const city = req.query.city || 'Berkeley';
 
     // 1. Call OpenWeather for Berkeley
     const weatherResp = await axios.get(
