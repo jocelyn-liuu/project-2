@@ -7,6 +7,17 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+    function getBackgroundClass() {
+    if (!data?.weather?.condition) return 'bg-default';
+
+    const cond = data.weather.condition.toLowerCase();
+
+    if (cond.includes('cloud')) return 'bg-cloudy';
+    if (cond.includes('rain')) return 'bg-rainy';
+    if (cond.includes('clear')) return 'bg-clear';
+    return 'bg-default';
+  }
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -30,36 +41,28 @@ export default function App() {
 
   const { weather, playlist } = data;
 
-  return (
-    <div className="page">
-      <div className="card">
-        <div className="card-inner">
-          <h2 className="title">
-            Today&apos;s Weather - Temp: {weather.temp}°C
-          </h2>
-          <p className="subtitle">
-            {weather.condition.toUpperCase()}
-          </p>
+ return (
+  <div className={`page ${getBackgroundClass()}`}>
 
-          <div className="content-row">
-            <div className="weather-box">
-              <p>Location: {weather.city}</p>
-              <p>Description: {weather.description}</p>
-            </div>
+    <div className="weather-container">
+      <h1>Today's Weather - Temp: {data.weather.temp}°C</h1>
+      <h2>{data.weather.condition}</h2>
 
-            <div className="playlist-box">
-              <div className="playlist-header">spotify playlist</div>
-              <iframe
-                className="playlist-iframe"
-                src={playlist.embedUrl}
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                title={playlist.name}
-              ></iframe>
-            </div>
-          </div>
+      <div className="content-row">
+       
+
+        <div className="playlist-box">
+          <iframe
+  className="playlist-iframe"
+  src={data.playlist.embedUrl}
+  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+></iframe>
+
+
         </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 }
